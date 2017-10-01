@@ -267,7 +267,7 @@ trait EloquentBuilderTrait
      * @param Builder $queryBuilder
      * @param $key
      */
-    private function joinRelatedModelIfExists(Builder $queryBuilder, $key)
+    protected function joinRelatedModelIfExists(Builder $queryBuilder, $key)
     {
         $model = $queryBuilder->getModel();
 
@@ -279,9 +279,9 @@ trait EloquentBuilderTrait
             if ($relation instanceof BelongsTo) {
                 $queryBuilder->join(
                     $relation->getRelated()->getTable(),
-                    $model->getTable().'.'.$relation->getQualifiedForeignKeyName(),
+                    $relation->getQualifiedForeignKey(),
                     '=',
-                    $relation->getRelated()->getTable().'.'.$relation->getOwnerKey(),
+                    $relation->getQualifiedOwnerKeyName(),
                     $type
                 );
             } elseif ($relation instanceof BelongsToMany) {
